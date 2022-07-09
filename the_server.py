@@ -11,6 +11,8 @@ print("server is up and running")
 clients = []
 nicknames = []
 
+
+
 def broadcast(message):
     for client in clients:
         client.send(message)
@@ -19,7 +21,11 @@ def handle(client):
     while True:
         try:
             message = client.recv(1024)
-            broadcast(message)
+            if((message.decode()).split(" " , 1)[1] == "WHORU"):
+                client.send("I am yor father!".encode())
+            else:
+                broadcast(message)
+ 
         except:
             index = clients.index(client)
             clients.remove(client)
