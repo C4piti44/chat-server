@@ -1,8 +1,8 @@
-from concurrent.futures import thread
 import socket
 import threading
+from datetime import datetime
 
-port = 44444
+port = 56000
 host = '10.100.102.19'
 
 client = socket.socket(socket.AF_INET , socket.SOCK_STREAM)
@@ -23,7 +23,8 @@ def receive():
 
 def write():
     while True:
-            client.send(f'{nickname}: {input("")}'.encode())
+        current_time = datetime.now().strftime("%H:%M:%S")
+        client.send(f'{nickname} [{current_time}]: {input("")}'.encode())
 
 
 thread_receive = threading.Thread(target=receive)
