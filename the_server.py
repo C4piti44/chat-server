@@ -37,12 +37,13 @@ def change(sr_client):
     des_client = get_client2(cli_nick , nickname)
     while True:
         try:
-            sr_client.send(f"what would you like to send {nickname}".encode())
+            sr_client.send(f"what would you like to send {nickname} in private".encode())
             message = sr_client.recv(1024)
             if(message.decode().split(" " , 2)[2]=="!EXIT"):
                 break
             else:
-                des_client.send(message)
+                content = "(direct)" + message.decode()
+                des_client.send(content.encode())
 
         except:
             sr_client.send(f"An error occurred, you can't message {nickname} please try later.".encode())
@@ -59,7 +60,7 @@ def handle(client):
 
             if((message.decode()).split(" " , 2)[2] == "!WHORU"):
                 client.send("I am yor father!".encode())
-                pass
+                continue
 
             if((message.decode()).split(" " , 2)[2] == "!EXIT"):
                 raise Exception
@@ -70,10 +71,11 @@ def handle(client):
                      arr.append(nickname)
                 client.send(str(arr).encode())
                 transcript(str(arr))
+                continue
 
             if((message.decode()).split(" " , 2)[2]=="!CHANGE"):
                 change(client)
-                pass
+                continue
             
             broadcast(message) #this method doesn't need an encode function because the message is already encoded
  
