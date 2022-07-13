@@ -3,21 +3,26 @@ import threading
 import datetime
 
 
+def transcript(message):
+    file = open("C:\\Users\\amitg\\Desktop\\secret.txt" , 'a')
+    file.write(message)
+    file.write("\n")
+    file.close()
+
 
 server = socket.socket(socket.AF_INET , socket.SOCK_STREAM)
 server.bind(("0.0.0.0" ,  56000))
 server.listen()
 print("server is up and running")
-file = open("C:\\Users\\amitg\\Desktop\\secret.txt" , 'a')
-file.write(str(datetime.date.today()))
-file.write("\n")
-file.close()
+transcript(str(datetime.date.today()))
 
-cli_nick = {} #contians all of the clients and their nicknames
+
+cli_nick = {}     #contians all of the clients and their nicknames{client : nickname}
 
 def broadcast(message):
     for client in cli_nick:
         client.send(message)
+
 
 def get_client2(dic , nickname):
     for client in dic:
@@ -26,46 +31,61 @@ def get_client2(dic , nickname):
     return client2
 
 
-#def switch(client):
-    client.send("Which user would you like to talk with?".encode())
-    nickname = client.recv(1024).decode()
-    client2 = get_client2(cli_nick , nickname)
+def change(sr_client):
+    sr_client.send("type the nickname of the user that you would like to talk with".encode())
+    nickname = sr_client.recv(1024).decode().split(" " ,2)[2]
+    des_client = get_client2(cli_nick , nickname)
     while True:
         try:
-            message = client.recv(1024) #maybe the message should be encoded
-            if(message.decode().split(" " , 2)[2]=="EXIT"):
+            sr_client.send(f"what would you like to send {nickname}".encode())
+            message = sr_client.recv(1024)
+            if(message.decode().split(" " , 2)[2]=="!EXIT"):
                 break
-            client2.send(message)
+            else:
+                des_client.send(message)
+
         except:
-            client.send(f"An error occurred, you can't message {nickname} please try later.".encode())
-            print("An error occurred1")
+            sr_client.send(f"An error occurred, you can't message {nickname} please try later.".encode())
+            print(f"An error in the connection between {cli_nick[sr_client]} and {nickname}")
             break
+
 
 
 def handle(client):
     while True:
         try:
             message = client.recv(1024)
-            if((message.decode()).split(" " , 2)[2] == "WHORU"):
+            transcript(message.decode())
+
+            if((message.decode()).split(" " , 2)[2] == "!WHORU"):
                 client.send("I am yor father!".encode())
                 pass
-            if((message.decode()).split(" " , 2)[2] == "EXIT"):
+
+            if((message.decode()).split(" " , 2)[2] == "!EXIT"):
                 raise Exception
-            #elif((message.decode()).split(" " , 2)[2]=="CNG"):
-                #switch(client)
-                #pass
+
+            if((message.decode()).split(" " , 2)[2] == "!ONLINE"):
+                arr = []
+                for nickname in cli_nick.values():
+                     arr.append(nickname)
+                client.send(str(arr).encode())
+                transcript(str(arr))
+
+            if((message.decode()).split(" " , 2)[2]=="!CHANGE"):
+                change(client)
+                pass
             
-            broadcast(message)
+            broadcast(message) #this method doesn't need an encode function because the message is already encoded
  
         except:
             nickname = cli_nick[client]
             cli_nick.pop(client)
             client.close()
-            broadcast(f'{nickname} disconnected!'.encode())
-            print(f'{nickname} disconnected!')
-            file = open("C:\\Users\\amitg\\Desktop\\secret.txt" , 'a')
-            file.write(f'{nickname} disconnected!\n')
-            file.close()
+            message2 = f'{nickname} disconnected!'
+            broadcast(message2.encode())
+            transcript(message2)
+            print(message2)
+            
             break
 
 def receive_clients(): #this function receive new connections
@@ -77,11 +97,9 @@ def receive_clients(): #this function receive new connections
         client.send("please choose a nickname ".encode())
         nickname = client.recv(1024).decode()        
         cli_nick[client] = nickname
-        print(f"the nickname of {address} is {nickname} ")
-        file = open("C:\\Users\\amitg\\Desktop\\secret.txt" , 'a')
-        file.write(f"the nickname of {address} is {nickname} ")
-        file.write("\n")
-        file.close()
+        message3 = f"the nickname of {address} is {nickname} "
+        print(message3)
+        transcript(message3)
 
         broadcast(f'{nickname} has joined the chat'.encode())
         client.send("Welcome, you officially joined my chat hope you will enjoy".encode())
