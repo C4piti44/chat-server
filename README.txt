@@ -9,4 +9,4 @@ Special Functions:
 3. !CHANGE - when a user types this keyword, he has the ablitiy to send messages to a specific user without the message being broadcasted to the rest of the chatroom.
 4. !WHORU - when a user types this keyword the server returns a pre saved string. 
 
-Another feture of the server is that every new conection or message that being send 
+Another feature of the server is that every new connection or message that is being sent is documented in a text file located on the server.
