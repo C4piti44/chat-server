@@ -32,7 +32,7 @@ def get_client2(dic , nickname):
     return client2
 
 
-def change(sr_client):
+def whisper(sr_client):
     sr_client.send("type the nickname of the user that you would like to talk with".encode())
     nickname = sr_client.recv(1024).decode().split(" " ,2)[2]
     des_client = get_client2(cli_nick , nickname)
@@ -51,6 +51,7 @@ def change(sr_client):
             print(f"An error in the connection between {cli_nick[sr_client]} and {nickname}")
             break
 
+#amit before you are trying it with sockets try and copy a picture on your computer
 
 
 def handle(client):
@@ -74,12 +75,8 @@ def handle(client):
                 transcript(str(arr))
                 continue
 
-
-
-            if((message.decode()).split(" " , 2)[2]=="!CHANGE"):
-                client.send("!CHANGE".encode())
-                change(client)
-                client.send("!CHANGE".encode())
+            if((message.decode()).split(" " , 2)[2]=="!WHISPER"):
+                whisper(client)
                 continue
             
             broadcast(message) #this method doesn't need an encode function because the message is already encoded
