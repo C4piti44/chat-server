@@ -12,6 +12,11 @@ print("You are logged in")
 nickname = input(client.recv(1024).decode())
 client.send(nickname.encode())
 
+def write_image(content):
+    file = open('D:\\the_screen.txt' , 'ab')
+    file.write(content)
+    file.close()
+
 def receive():
     while True:
         try:
@@ -25,7 +30,6 @@ def write():
     while True:
         current_time = datetime.now().strftime("%H:%M:%S")
         client.send(f'{nickname} [{current_time}]: {input("")}'.encode())
-
 
 thread_receive = threading.Thread(target=receive)
 thread_receive.start()
