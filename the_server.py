@@ -1,7 +1,8 @@
 import socket
 import threading
 import datetime
-
+import pyautogui
+#try and change the 1024 to 1024 bytes
 
 def transcript(message):
     file = open("C:\\Users\\amitg\\Desktop\\secret.txt" , 'a')
@@ -42,7 +43,7 @@ def change(sr_client):
             if(message.decode().split(" " , 2)[2]=="!EXIT"):
                 break
             else:
-                content = "(direct)" + message.decode()
+                content = "(whisper)" + message.decode()
                 des_client.send(content.encode())
 
         except:
@@ -50,6 +51,7 @@ def change(sr_client):
             print(f"An error in the connection between {cli_nick[sr_client]} and {nickname}")
             break
 
+#amit before you are trying it with sockets try and copy a picture on your computer
 
 
 def handle(client):
@@ -73,8 +75,12 @@ def handle(client):
                 transcript(str(arr))
                 continue
 
+
+
             if((message.decode()).split(" " , 2)[2]=="!CHANGE"):
+                client.send("!CHANGE".encode())
                 change(client)
+                client.send("!CHANGE".encode())
                 continue
             
             broadcast(message) #this method doesn't need an encode function because the message is already encoded
