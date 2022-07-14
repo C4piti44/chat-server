@@ -105,7 +105,7 @@ def receive_clients(): #this function receive new connections
         print(message3)
         transcript(message3)
 
-        broadcast(f'{nickname} has joined the chat'.encode())
+        broadcast(f'{nickname} has joined the chat\n'.encode())
         client.send("Welcome, you officially joined my chat hope you will enjoy".encode())
 
 
