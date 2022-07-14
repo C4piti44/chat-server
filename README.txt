@@ -1,5 +1,5 @@
 This is my TCP server, this server is a broadcast server.
-Every message sent to the server is broadcasted to everyone who connects to the server.
+Every message sent to the server is broadcasted to everyone who is connected to the server.
 My server has a few special functions available to the client.
 
 Special Functions:
