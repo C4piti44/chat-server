@@ -3,7 +3,7 @@ import threading
 from datetime import datetime
 
 port = 56000
-host = '10.100.102.19'
+host = input("what is the ip of the server that you would like to connect")
 
 client = socket.socket(socket.AF_INET , socket.SOCK_STREAM)
 client.connect((host , port))
