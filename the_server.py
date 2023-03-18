@@ -61,7 +61,7 @@ def handle(client):
             transcript(message.decode())
 
             if((message.decode()).split(" " , 2)[2] == "!WHORU"):
-                client.send("I am yor father!".encode())
+                client.send("I am Ironman... *-*-*-*".encode())
                 continue
 
             if((message.decode()).split(" " , 2)[2] == "!EXIT"):
