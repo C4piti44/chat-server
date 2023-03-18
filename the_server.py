@@ -32,7 +32,7 @@ def get_client2(dic , nickname): # checks if requested client is Online
     return client2
 
 
-def whisper(sr_client):
+def whisper(sr_client): #messages in whisper mode are not transcripted
     sr_client.send("type the nickname of the user that you would like to talk with".encode())
     nickname = sr_client.recv(1024).decode().split(" " ,2)[2]
     des_client = get_client2(cli_nick , nickname)
@@ -53,7 +53,7 @@ def whisper(sr_client):
 
 
 
-def handle(client):
+def handle(client): # main function that handles the communications between the users
     while True:
         try:
             message = client.recv(1024)
@@ -65,6 +65,7 @@ def handle(client):
 
             if((message.decode()).split(" " , 2)[2] == "!EXIT"):
                 raise Exception
+                break 
 
             if((message.decode()).split(" " , 2)[2] == "!ONLINE"):
                 arr = []
@@ -91,7 +92,7 @@ def handle(client):
             
             break
 
-def receive_clients(): #this function receive new connections
+def receive_clients(): #main function that receive new connections
     while True:
         client , address = server.accept()
         print(f'{str(address)} connected')
