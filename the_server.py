@@ -51,7 +51,6 @@ def whisper(sr_client):
             print(f"An error in the connection between {cli_nick[sr_client]} and {nickname}")
             break
 
-#amit before you are trying it with sockets try and copy a picture on your computer
 
 
 def handle(client):
