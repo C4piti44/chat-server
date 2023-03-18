@@ -25,7 +25,7 @@ def broadcast(message):
         client.send(message)
 
 
-def get_client2(dic , nickname):
+def get_client2(dic , nickname): # checks if requested client is Online
     for client in dic:
         if (nickname == dic[client]):
             client2 = client
